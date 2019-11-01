@@ -1,0 +1,40 @@
+1. mount the share directory
+mount -t cifs -o userer=name,passwor=pw  \\ip\\dirctory   /point 
+
+2. mount  data block
+fidsk -l  date.img 
+Units: sectors of 1 * 512 = 512 bytes
+Device     Boot  Start     End Sectors  Size Id Type
+date.img1        49152  253951  204800  100M 83 Linux
+date.img2       253952 2097151 1843200  900M 83 Linux
+
+49152*512 = 24M = 24576K  =25165824 
+
+sudo mount -o loop -o  offset=24M  date.img  /mnt/
+or 
+sudo mount -o loop -o  offset=24576K  date.img  /mnt/
+or
+sudo mount -o loop -o  offset=25165824  date.img  /mnt/
+
+3. remount data
+mount -o remount,ro  device path
+or
+mount -o remount.rw,noatime  device path
+or
+mount -o remount.rw,noatime,sync  device path
+
+4. 
+ 1 mount 
+losetup -l
+losetup /dev/loop0  date.img -o 24M
+sudo mount /dev/loop0 /mnt
+or 
+losetup	 /dev/loop0 date.img 
+partprobe /dev/loop1
+mount /dev/loop1p1  /mnt
+mount /dev/loop1p2 /mnt
+ 2  umount 
+umount /dev/loop1p2
+umount /dev/loop1p1
+partx -d /dev/loop1
+losetup -d  /dev/loop1

@@ -1,0 +1,7 @@
+1. 
+nc -l -p 9999
+
+2. 
+nc -c -w 2 ip port   or nc -c -w  ip port1-port2
+
+

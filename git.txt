@@ -1,0 +1,45 @@
+[ config ]
+git config --global user.name   <name>
+git config --global user.email  <email>
+
+[ create ]
+git add 
+git commit -m  
+git push 
+git clone path
+git pull 
+
+git push -f
+
+[ branch ctrl ]
+git branch  -D
+git branch -a
+git checkout
+
+[ status ]
+git status 
+git diff --cached 
+git log 
+git show 
+
+git merge 
+git reflog 
+git rebase 
+
+git stash 
+git stash pop 
+
+[ patch  ]
+git format-patch -n 
+git apply --stat xxx.patch 
+git apply --check xxx.patch
+git am --signoff < xxx.patch 
+
+
+[ backcode ]
+git reset --hare  ID
+
+[ delete branch ]
+git push origin --delete  currentbranch
+git push origin HEAD -f
+
