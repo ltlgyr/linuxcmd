@@ -1,0 +1,143 @@
+IPtables中可以灵活的做各种网络地址转换（NAT），网络地址转换主要有两种：SNAT和DNAT。
+
+SNAT是source networkaddress translation的缩写，即源地址目标转换。比如，多个PC机使用ADSL路由器共享上网，每个PC机都配置了内网IP，PC机访问外部网络的时候，路由器将数据包的报头中的源地址替换成路由器的ip，当外部网络的服务器比如网站web服务器接到访问请求的时候，他的日志记录下来的是路由器的ip地址，而不是pc机的内网ip，这是因为，这个服务器收到的数据包的报头里边的“源地址”，已经被替换了，所以叫做SNAT，基于源地址的地址转换。
+
+DNAT是destination networkaddress translation的缩写，即目标网络地址转换，典型的应用是，有个web服务器放在内网配置内网ip，前端有个防火墙配置公网ip，互联网上的访问者使用公网ip来访问这个网站，当访问的时候，客户端发出一个数据包，这个数据包的报头里边，目标地址写的是防火墙的公网ip，防火墙会把这个数据包的报头改写一次，将目标地址改写成web服务器的内网ip，然后再把这个数据包发送到内网的web服务器上，这样，数据包就穿透了防火墙，并从公网ip变成了一个对内网地址的访问了，即DNAT，基于目标的网络地址转换。
+
+Netfilter、iptables
+
+状态 ESTABLISHED指出该信息包属于已建立的连接，该连接一直用于发送和接收信息包并且完全有效。 
+状态 INVALID        指出该信息包与任何已知的流或连接都不相关联，它可能包含错误的数据或头。
+状态 NEW 意味着该信息包已经或将启动新的连接，或者它与尚未用于发送和接收信息包的连接相关联。
+状态 RELATED 表示该信息包正在启动新连接，以及它与已建立的连接相关联。
+
+1，rules
+2，chains
+3，tables
+
+
+raw   
+   prerouting
+   output
+
+mangle
+    input       (处理进入的数据包) 
+    forward（处理转发的数据包）
+    output     (处理进入的数据包)
+    postrouting (修改即将出去的数据包)
+    prerouting （修改即将到来的数据包）
+nat
+   prerouting
+   postrouting
+   output
+filter过滤数据包， 默认表
+   input 
+   forward 
+   output
+
+MASQUERADE，地址伪装，算是snat中的一种特例，可以实现自动化的snat。
+#查看防火墙的策略
+#-n 使用数字形式（numeric）显示输出结果
+#-L 列出（list）指定链中所有的规则进行查看
+#target代表进行的动作，一般会由三种不同的动作，详细解释如下
+ （1）ACCEPT:接受数据包
+ （2）REJECT： 拒绝数据包通过，必要时会给数据发送端一个响应的信息。
+ （3）DROP 直接丢弃数据包，不给任何回应信息
+# prot：代表使用的封包协定，主要有 tcp, udp 及 icmp 三种封包格式
+# opt :解释说明
+#source :来源地址的闲置
+#destination:目标地址进行限制
+
+
+命令：
+-A  --append  <链名>  在规则列表的最后增加1条规则
+-Z  --zero        <链名>  将表中数据包计数器和流量计数器归零
+-D 删除（delete）指定链中的某一条规则，可以按规则序号和内容删除 
+-I  在指定链中插入（insert）一条新的规则，默认在第一行添加 
+-R 修改、替换（replace）指定链中的某一条规则，可以按规则序号和内容替换 
+-L 列出（list）指定链中所有的规则进行查看 
+-F 清空（flush） 
+-N 新建（new-chain）一条用户自己定义的规则链 
+-X 删除指定表中用户自定义的规则链（delete-chain） 
+-P 设置指定链的默认策略（policy） 
+-n 使用数字形式（numeric）显示输出结果 
+-v 查看规则表详细信息（verbose）的信息 
+-V 查看版本(version) 
+-h 获取帮助（help）
+
+iptables的四表五链 
+表的处理优先级：raw>mangle>nat>filter 
+filter：一般的过滤功能 
+nat:用于nat功能（端口映射，地址映射等） 
+mangle:用于对特定数据包的修改 
+raw:有限级最高，设置raw时一般是为了不再让iptables做数据包的链接跟踪处理，提高性能 
+5链：PREROUTING,INPUT,FORWARD,OUTPUT,POSTROUTING 
+PREROUTING:数据包进入路由表 
+INPUT:通过路由表后目的地为本机 
+FORWARDING:通过路由表后，目的地不为本机 
+OUTPUT:由本机产生，向外转发 
+POSTROUTIONG:发送到网卡接口之前。
+
+echo 1 >/proc/sys/net/ipv4/ip_forward
+或者
+/etc/sysctl.conf
+net.ipv4.ip_forward=1
+
+
+iptable [-t 表] 命令 匹配 操作
+命令：
+-A  --append  <链名>  在规则列表的最后增加1条规则
+-Z  --zero        <链名>  将表中数据包计数器和流量计数器归零
+-D 删除（delete）指定链中的某一条规则，可以按规则序号和内容删除
+-I  在指定链中插入（insert）一条新的规则，默认在第一行添加
+-R 修改、替换（replace）指定链中的某一条规则，可以按规则序号和内容替换
+-L 列出（list）指定链中所有的规则进行查看
+-F 清空（flush）
+-N 新建（new-chain）一条用户自己定义的规则链
+-X 删除指定表中用户自定义的规则链（delete-chain）
+-P 设置指定链的默认策略（policy）
+-n 使用数字形式（numeric）显示输出结果
+-v 查看规则表详细信息（verbose）的信息
+-V 查看版本(version)
+-h 获取帮助（help）
+
+匹配规则：
+-i --in-interface    网络接口名>     指定数据包从哪个网络接口进入，
+-o --out-interface   网络接口名>     指定数据包从哪个网络接口输出
+-p ---proto          协议类型        指定数据包匹配的协议，如TCP、UDP和ICMP等
+-s --source          源地址或子网>   指定数据包匹配的源地址
+   --sport           源端口号>       指定数据包匹配的源端口号
+   --dport           目的端口号>     指定数据包匹配的目的端口号
+-m --match           匹配的模块      指定数据包规则所使用的过滤模块
+
+操作：
+iptables处理动作
+除了 ACCEPT、REJECT、DROP、REDIRECT 、MASQUERADE 以外，
+还多出 LOG、ULOG、DNAT、RETURN、TOS、SNAT、MIRROR、QUEUE、TTL、MARK等。我们只说明其中最常用的动作：
+
+REJECT    拦阻该数据包
+iptables -A  INPUT -p TCP --dport 22 -j REJECT --reject-with ICMP echo-reply
+
+DROP  丢弃数据包不予处理，进行完此处理动作后，将不再比对其它规则，直接中断过滤程序。
+
+REDIRECT   将封包重新导向到另一个端口（PNAT），进行完此处理动作后，将会继续比对其它规则。这个功能可以用来实作透明代理 或用来保护web 服务器。
+例如：iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT--to-ports 8081
+
+MASQUERADE 改写封包来源IP为防火墙的IP，可以指定port 对应的范围，进行完此处理动作后，直接跳往下一个规则链
+iptables -t nat -A POSTROUTING -p TCP -j MASQUERADE --to-ports 21000-31000
+
+LOG   将数据包相关信息纪录在 /var/log 中，详细位置请查阅 /etc/syslog.conf 配置文件，进行完此处理动作后，将会继续比对其它规则。例如：
+iptables -A INPUT -p tcp -j LOG --log-prefix "input packet"
+
+pre   流入  dnat  将目标ip改变
+将 ens33 进入目标是172.16.0.1 port是80 的数据包使用dnat，将目标地址改成192.168.0.10 。
+iptables -t nat -A PREROUTING -i ens33 -d 172.16.0.1 -p tcp --dport  80 -j DNAT --to-destination 192.168.0.10
+
+
+post 流出  snat   将来源ip改变
+将eth0流出 源地址是192.168.1.0/24的数据包使用snat，将原地址改成61.99.28.1
+iptables -t nat -A POSTROUTING -s 192.168.1.0/24 -o eth0 -j SNAT --to 61.99.28.1
+
+
+MASQUERADE地址伪装
+iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE
