@@ -1,0 +1,36 @@
+global search regular expression_r(RE) and print out the line
+1.排除搜索的目录
+	--exclude-dir=DIR
+	ep...
+	one 
+	grep -rns pi ./ -R --exclude-dir=.git
+	some 
+	grep -rns pi ./ -R --exclude-dir={.git,test}
+	dir and file
+	grep -rns pi ./ -R --exclude=*.{java,js}
+
+2. 显示不包string的所有行。
+	grep -v 'string'
+
+3. 忽略大小写
+	grep -i
+	-i,--ignore-case
+	-r  递归
+	-n  显示匹配行及行号
+	-s  不显示不存在或无匹配文本的错误信息
+	-c  只输出匹配行的计数
+	-h  查询多文件时不显示文件名
+	-l  查询多文件时只输出包含匹配字符的文件名
+
+4. pattern正则表达式主要参数：
+	\ :忽略正则表达式中特殊字符的原有含义。
+	^ :匹配正则表达式的开始行。
+	$ : 匹配正则表达式的结束行。
+	\<:从匹配正则表达 式的行开始。
+	\>:到匹配正则表达式的行结束。
+	. :所有的单个字符。
+	* :有字符，长度可以为0。
+	[ ]：单个字符，如[A]即A符合要求 。
+	[ - ]：范围，如[A-Z]，即A、B、C一直到Z都符合要求 。
+
+	

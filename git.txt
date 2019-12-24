@@ -1,3 +1,11 @@
+[ status ]
+1, Untracked  
+2, tracked
+3, unstage
+4, stage
+5, uncommit
+6, coummit
+
 [ config ]
 git config --global user.name   <name>
 git config --global user.email  <email>
@@ -16,7 +24,6 @@ git branch  -D
 git branch -a
 git checkout
 
-[ status ]
 git status 
 git diff --cached 
 git log 
@@ -43,3 +50,25 @@ git reset --hare  ID
 git push origin --delete  currentbranch
 git push origin HEAD -f
 
+[git log]
+git log --oneline 
+git log --stat  
+git log -p    & git show 
+git shortlog 
+git log --pretty="%cn committed %h on %cd"
+git log --author="name"
+git log -n
+git log --after "12-30-2019"
+git log --before  "1-1-2020"
+git log --until=1.minute.ago      before 1.
+git log --since=1.day.ago
+git log --since=1.hour.ago
+
+git log --merges 
+git log --no-merges 
+git log --decoreate
+git log branch -- filename 
+git log --grep="text in commit"
+git log --all-match --grep="text in commit" --author="text in author"
+
+git log --graph

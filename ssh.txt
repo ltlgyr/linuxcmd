@@ -1,0 +1,13 @@
+
+-p port 
+-t cmd 
+
+-N #告诉SSH客户端，这个连接不需要执行任何命令。仅仅做端口转发
+-f #告诉SSH客户端在后台运行
+-L #本地转发
+-R #远程转发
+-D #动态转发
+-C #数据压缩
+ssh -C -f -N -g -L listen_port:DST_Host:DST_port user@Tunnel_Host 
+ssh -C -f -N -g -R listen_port:DST_Host:DST_port user@Tunnel_Host 
+ssh -C -f -N -g -D listen_port user@Tunnel_Host

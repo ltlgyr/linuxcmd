@@ -1,0 +1,7 @@
+using in Ubuntu gnome
+shift+ctrl+u hex asciinum  = chart
+
+eg. 
+shift+ctrl+u a   =  \n
+shift+ctrl+u d   =  \r
+shift+ctrl+u 51  =  Q

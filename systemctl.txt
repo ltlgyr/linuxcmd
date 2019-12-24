@@ -1,0 +1,110 @@
+.service系统服务；
+.target一组系统服务；
+.automount自动挂载点；
+.device能被内核识别的设备；
+.mount挂载点；
+.path文件系统的文件或者目录；
+.scope外部创建的进程；
+.slice一组分层次管理的系统进程；
+.snapshot系统服务状态管理；
+.socket进程间通讯套接字；
+.swap定义swap文件或者设备；
+.timer定义定时器。
+
+
+1. systemd class
+     systemd-analyze  blame
+关机：systemctl halt、systemctl poweroff
+重启：systemctl reboot
+挂起：systemctl suspend
+快照：systemctl hibernate
+快照并挂起：systemctl hybrid-sleep
+<1>启动：service SERVICE_NAME start ==>  systemctl start SERVICE_NAME.service
+<2>停止：service SERVICE_NAME stop ==>  systemctl stop SERVICE_NAME.service
+<3>重启：service SERVICE_NAME restart ==>  systemctl restart SERVICE_NAME.service
+<4>状态：service SERVICE_NAME status ==>  systemctl status SERVICE_NAME.service
+<5>条件式重启：(相当于如果服务之前启动了，则对服务进行重启，如果服务之前没启动，则不执行任何操作)
+	service SERVICE_NAME condrestart ==>  systemctl tryrestart SERVICE_NAME.service
+<6>重载或重启服务：(相当于如果服务支持不重启而重载配置文件，就进行重载，如果服务不支持重载配置文件，就重启服务)
+	systemctl reload-or-restart SERVICE_NAME.service
+<7>重载或条件是重启：(相当于如果服务支持不重启而重载配置文件，就进行重载，如果服务不支持重载配置文件，就重启服务,但重启的前提是该服务之前是开启的)
+	systemctl reload-or-try-restart SERVICE_NAME.service
+<8>查看某服务当前是否激活：
+	centos6不支持
+	systemctl is-acive SERVICE_NAME.service
+<9>查看所有已激活的服务：
+	systemctl list-unit –type|-t service
+<10>查看所有的服务，也就是所有已经装载load的服务，包含已激活和未激活的：
+	chkconfig –list ==> systemctl list-unit -t service -a
+	显示出来的信息的含义：
+	loaded:Unit配置文件已处理
+    active(running):一次或多次持续处理的运行
+    active(exited):成功完成一次性的配置
+    active(waiting):运行中，等待一个事件
+    inactive:不运行
+    enabled:开机启动
+    disabled:开机不启动
+    static:开机不启动，但可被另一个启用的服务激活
+<11>设置服务可以开机自动启动：
+	chkconfig SERVICE_NAME on ==> systemctl enable SERVICE_NAME.service
+<12>禁止服务开机自动启动：
+	chkconfig SERVICE_NAME off ==> systemctl disable SERVICE_NAME.service
+<13>查看某服务是否能够开机自启动：
+	chkconfig –list SERVICE_NAME ==> systemctl is-enabled SERVICE_NAME.service
+<14>禁止某服务设定为开机自启：
+	systemctl mask SERVICE_NAME.service
+<15>取消上述禁止：
+	systemctl unmask SERVICE_NAME.service
+<16>查看服务的依赖关系：
+	systemctl list-dependencies SERVICE_NAME.service
+
+2.systemd对target类unit的管理(类似于运行级别的管理)
+运行级别的对应关系：
+0 ==> runlevel0.target 或 poweroff.target
+1 ==> runlevel1.target 或 rescue.target
+2 ==> runlevel2.target 或 multi-user.target
+3 ==> runlevel3.target 或 multi-user.target
+4 ==> runlevel4.target 或 multi-user.target
+5 ==> runlevel5.target 或 graphical.target
+6 ==> runlevel6.target 或 reboot.target
+<1>级别切换：
+	init 数字 ==> systemctl isolate NAME.target
+<2>查看当前运行级别：
+	runlevel ==> systemctl list-units -t target
+<3>查看所有装载的target：
+	systemctl list-units -t target
+<4>查看默认运行级别：
+	systemctl get-default
+<5>设定默认运行级别：
+	systemctl set-default NAME.target
+	centos6修改/etc/inittab文件
+<6>切换至紧急救援模式：
+	systemctl rescue
+<7>切换至紧急emergency模式：比紧急救援模式加载的东西更加少，紧急救援模式还会执行系统初始化脚本/etc/rc.d/rc.sysinit系统初始化脚本，但emergency不会执行系统初始化脚本，通常用于当装了某些硬件驱动后无法正常启动时，才进入该模式。
+	systemctl emergency
+
+2.systemctl list-units
+ |systemctl list-units -t service
+ |systemctl list-units -t device
+ |systemctl start   devicename 
+ |systemctl status   devicename 
+ |systemctl reload sshd
+ |systemctl --failed
+
+3.启动流程详解
+	<1>UEFi或BIOS初始化，运行POST开机自检
+	<2>选择启动设备
+	<3>引导装载程序, centos7是grub2
+	<4>加载装载程序的配置文件： /etc/grub.d/   /etc/default/grub    /boot/grub2/grub.cfg
+	<5>加载initramfs驱动模块
+	<6>加载内核选项
+	<7>内核初始化， centos7使用systemd代替init
+	<8>执行initrd.target所有单元，包括挂载/etc/fstab
+	<9>从initramfs根文件系统切换到磁盘根目录
+	<10>systemd执行默认target配置，配置文件/etc/systemd/default.target /etc/systemd/system/
+	<11>systemd执行sysinit.target初始化系统及basic.target准备操作系统
+	<12>systemd启动multi-user.target下的本机与服务器服务
+	<13>systemd执行multi-user.target下的/etc/rc.d/rc.local
+	<14>systemd执行multi-user.target下的getty.target及登入服务
+	<15>systemd执行graphical需要的服务
+
