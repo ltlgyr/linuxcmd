@@ -29,9 +29,21 @@ git diff --cached
 git log 
 git show 
 
-git merge 
 git reflog 
-git rebase 
+interactive  branch 
+[ git merge ] 
+	git merge --squash master 
+
+
+interactive  commit
+[ git rebase ]
+	git rebase -i [startpoint] [endpoint]
+	如果合并中间的几个commit,会产生一个临时的分支,基于这个临时分支，创建一个新的分支 feature/temp
+	再切回 master分支, 执行:git rebase feature/temp
+
+	git rebase --abort 来撤销修改
+
+
 
 git stash 
 git stash pop 
