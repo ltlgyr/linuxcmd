@@ -1,0 +1,4 @@
+partx
+partx -d
+
+partprobe
