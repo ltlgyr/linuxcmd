@@ -1,4 +1,5 @@
 [ status ]
+0, create 
 1, Untracked  
 2, tracked
 3, unstage
@@ -14,9 +15,11 @@ git config --global user.email  <email>
 git add 
 git commit -m  
 git push 
-git clone path
+[ git clone ]
+	git clone --depth=1    repo_url.git
 git pull 
 
+git clean
 git push -f
 
 [ branch ctrl ]
@@ -84,3 +87,5 @@ git log --grep="text in commit"
 git log --all-match --grep="text in commit" --author="text in author"
 
 git log --graph
+
+git tag -a v0.1 -m "version 0.1 released" 3628164
