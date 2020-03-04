@@ -16,6 +16,9 @@ docker image pull library/hello-world
 # 删除镜像
 docker image rm 镜像id/镜像ID
 
+# 删除images，通过image的id来指定删除谁
+docker rmi 
+
 # 创建容器
 docker run [选项参数] 镜像名 [命令]
 
