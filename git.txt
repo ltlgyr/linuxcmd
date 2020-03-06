@@ -1,98 +1,106 @@
-[ status ]
-0, create  创建
-1, Untracked  未跟踪
-2, tracked 跟踪
-3, unstage 未暂存
-4, stage  暂存
-5, uncommit 未提交
-6, coummit 提交
-
 [ config ]
 git config --global user.name   <name>
 git config --global user.email  <email>
 
-[ create ]
-git add 
-git commit -m  
-git push 
-[ git clone ]
-	git clone --depth=1    repo_url.git
-git pull 
 
-git clean
-git push -f
+[ status ]
+   	0, create  创建
+	1, Untracked  未跟踪
+	2, tracked 跟踪
+	3, unstage 未暂存
+	4, stage  暂存
+	5, uncommit 未提交
+	6, coummit 提交
 
-[ branch ctrl ]
-git branch  -D
-git branch -a
-git checkout
+[ work ]
+	init 
+		git init --bare 
+	clone 
+		git clone --depth=1    repo_url.git
+	status 
+		git status 
+	diff 
+		git diff --cached 
+	show 
+		git show 
+	clean
+		git clean
+	stash
+		git stash  list
+		git stash  show 
+		git stash  drop
+		git stash  pop
+		git stash  branch 
+		git stash  clear
+		git stash  create 
+		git stash  store
 
-git status 
-git diff --cached 
-git log 
-git show 
+[ stage ]
+	add 
+	commit -m 
+	apply
+		git apply --check xxx.patch
+		git apply --stat xxx.patch 
+	am
+		git am --signoff < xxx.patch 
+	formate-patch 
+		git format-patch -n 
+	reset 
+		git reset --hard  ID
 
-git reflog 
-interactive  branch 
-[ git merge ] 
-	git merge --squash master 
+[ remote ]
+	push
+		git push origin --delete  currentbranch
+		git push origin HEAD -f
+	pull
 
+[ branch ]
+	checkout
+	branch
+		git branch  -D
+		git branch  -a
+	merge
+		git merge --squash master 
+	rebase 
+		[statu]
+			pick  :保留该commit（缩写:p）
+			reword:保留该commit，但我需要修改该commit的注释（缩写:r）
+			edit  :保留该commit, 但我要停下来修改该提交(不仅仅修改注释)（缩写:e）
+			squash:将该commit和前一个commit合并（缩写:s）
+			fixup :将该commit和前一个commit合并，但我不要保留该提交的注释信息（缩写:f）
+			exec  :执行shell命令（缩写:x）
+			drop  :我要丢弃该commit（缩写:d）
 
-interactive  commit
-[ git rebase ]
-pick：保留该commit（缩写:p）
-reword：保留该commit，但我需要修改该commit的注释（缩写:r）
-edit：保留该commit, 但我要停下来修改该提交(不仅仅修改注释)（缩写:e）
-squash：将该commit和前一个commit合并（缩写:s）
-fixup：将该commit和前一个commit合并，但我不要保留该提交的注释信息（缩写:f）
-exec：执行shell命令（缩写:x）
-drop：我要丢弃该commit（缩写:d）
-	git rebase -i [startpoint] [endpoint]
-	如果合并中间的几个commit,会产生一个临时的分支,基于这个临时分支，创建一个新的分支 feature/temp
-	再切回 master分支, 执行:git rebase feature/temp
+		git rebase -i [startpoint] [endpoint]
+			如果合并中间的几个commit,会产生一个临时的分支,基于这个临时分支，创建一个新的分支 feature/temp
+			再切回 master分支, 执行:git rebase feature/temp
 
-	git rebase --abort 来撤销修改
+		git rebase --abort 来撤销修改
+	tag
+		git tag -a v0.1 -m "version 0.1 released" 3628164
 
+[ log ]
+	log
+		git log --oneline 
+		git log --stat  
+		git log -p    & git show 
+		git log --pretty="%cn committed %h on %cd"
+		git log --author="name"
+		git log -n
+		git log --after "12-30-2019"
+		git log --before  "1-1-2020"
+		git log --until=1.minute.ago      before 1.
+		git log --since=1.day.ago
+		git log --since=1.hour.ago
+		git log --merges 
+		git log --no-merges 
+		git log --decoreate
+		git log branch -- filename 
+		git log --grep="text in commit"
+		git log --all-match --grep="text in commit" --author="text in author"
+		git log --graph --oneline --all 
 
+	shortlog 
 
-git stash 
-git stash pop 
+	reflog
 
-[ patch  ]
-git format-patch -n 
-git apply --stat xxx.patch 
-git apply --check xxx.patch
-git am --signoff < xxx.patch 
-
-
-[ backcode ]
-git reset --hare  ID
-
-[ delete branch ]
-git push origin --delete  currentbranch
-git push origin HEAD -f
-
-[git log]
-git log --oneline 
-git log --stat  
-git log -p    & git show 
-git shortlog 
-git log --pretty="%cn committed %h on %cd"
-git log --author="name"
-git log -n
-git log --after "12-30-2019"
-git log --before  "1-1-2020"
-git log --until=1.minute.ago      before 1.
-git log --since=1.day.ago
-git log --since=1.hour.ago
-
-git log --merges 
-git log --no-merges 
-git log --decoreate
-git log branch -- filename 
-git log --grep="text in commit"
-git log --all-match --grep="text in commit" --author="text in author"
-
-git log --graph
-
-git tag -a v0.1 -m "version 0.1 released" 3628164
