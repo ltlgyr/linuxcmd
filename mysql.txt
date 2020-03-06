@@ -1,0 +1,34 @@
+1.创建一个数据库：
+	CREATE DATABASE mldn CHARACTER SET UTF8;
+2.查看所有的数据库：
+	show databases;
+3.使用mldn数据库：
+	use mldn;
+4.建立数据表:
+	create table news(
+    nid  INT AUTO_INCREMENT,
+    title  VARCHAR(30)  NOT NULL,（NOT NULL的作用是如果在插入时，忽略了本属性的值，则报错，而不是默认null）
+    content TEXT,
+    CONSTRAINT pk_nid PRIMARY KEY(nid)
+ )engine=innodb;
+5.修改（更新）内容
+ 	update tbl_name set col1=new_col1, col2=new_col2
+	alter table tbl_name add i int [first / after col2]
+6.修改字段类型以及名称：modify / change
+	alter table tbl_name modify col1 char(10)
+7.向表中插入一些元素，
+	insert into news(title,context) values("","test")；
+8，遍历表中的所有元素：
+	select * from news;
+9,获取最后一次输入之后的数据的长度：
+	select last_insert_ID(); 这个属性是具体指向某一个表格的
+10.分页操作：统一使用，统一使用LIMIT 进行，即：在所有查询语句的最后一块写上LIMIT，
+	查询LIMIT 开始行，长度
+	select * from news limit 2,5;               是有序列号的，mysql是从0开始
+11.删除一个数据库中的文件：
+	delete from news where nid=6; 这个使用了primary key的属性
+
+12.删除一个数据库：
+	drop database <数据库名>；
+	drop database  if exists <数据库名>；防止数据库不存在的话报错
+
