@@ -1,0 +1,35 @@
+# 启动docker
+sudo service docker start
+
+# 停止docker
+sudo service docker stop
+
+# 重启docker
+sudo service docker restart
+
+# 列出镜像
+docker image ls
+
+# 拉取镜像
+docker image pull library/hello-world
+
+# 删除镜像
+docker image rm 镜像id/镜像ID
+
+# 删除images，通过image的id来指定删除谁
+docker rmi 
+
+# 创建容器
+docker run [选项参数] 镜像名 [命令]
+
+# 停止一个已经在运行的容器
+docker container stop 容器名或容器id
+
+# 启动一个已经停止的容器
+docker container start 容器名或容器id
+
+# kill掉一个已经在运行的容器
+docker container kill 容器名或容器id
+
+# 删除容器
+docker container rm 容器名或容器id

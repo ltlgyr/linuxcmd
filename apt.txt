@@ -1,0 +1,30 @@
+
+check the depends 
+apt-cache depends package-name
+
+remove not need 
+apt autoremove
+
+remove  the package 
+apt autoclean
+
+添加key
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys  keyid
+
+列出所有来源的版本
+apt-cache madison
+
+apt-cache policy
+
+指定某些软件不更新的方法
+unknown – 用户并没描述他想对软件包进行什么操作。
+install – 用户希望对软件包进行安装或升级。
+remove – 用户希望删除软件包，但不想删除任何配置文件。
+purge – 用户希望完全删除软件包，包括配置文件。
+hold – 用户希望软件包保持现状，例如，用户希望保持当前的版本，当前的状态，当前的一切。
+1.查看当前的系统中所有软件包状态
+sudo dpkg --get-selections |more
+2.给bash-file锁定当前版本不更新
+sudo echo "bash-file hold " |sudo dpkg --set-selections 
+3.查看当前己锁定的软件包：
+suod dpkg --get-selections |grep hold 

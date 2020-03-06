@@ -1,0 +1,56 @@
+#输出marks.txt的完整内容
+$ awk '{print}' marks.txt 
+$ awk '{print $0}' marks.txt
+
+#输出marks.txt每一行以空格为间隔的第一块内容，（默认以空格为间隔）
+$ awk '{print $1}' marks.txt
+#输出第二块内容
+$ awk '{print $2}' marks.txt
+$ awk '{print $3 "\t" $4}' marks.txt
+
+#输出marks.txt文件中字符数大于18的行
+$ awk 'length($0) > 18' marks.txt
+$ awk 'length($0) > 18 {print $0}' marks.txt
+
+#输出/etc/passwd文件中每行以:间隔的第一个域
+$ cat /etc/passwd |awk  -F ':'  '{print $1}'  
+
+#输出access_stat4.log文件中含有content的行到gl.log文件中 >> 表示追加，> 表示覆盖
+$ /bin/awk '/content/'  access_stat4.log >> ./gl/gl.log
+
+$ /bin/awk '/content/ {print $1}'  access_stat4.log >> ./gl/gl.log
+
+#输出test.log文件中含有content的行数
+$ awk '/content/{++cnt} END {print "Count = ", cnt}' test.log
+#输出test.log文件中含有content的行及其行数
+$ awk '/content/{++cnt;print} END {print "Count = ", cnt}' test.log
+
+#自定义间隔符，以+号为间隔符输出test.log文件每行的第一块
+$ awk -F "+" '{print $1}' test.log
+#以+或8为间隔符
+$ awk -F "+|8" '{print $1}' test.log
+
+#正则  输出test.log文件中不含有如下字符的行  正则表达式操作符使用 ~ 和 !~ 分别代表匹配和不匹配。
+$ awk '{if($0 !~ /Googlebot|Baiduspider|Sogou|bingbot|Yahoo/) print $0}' test.log
+#输出test.log文件中以空格为间隔第一块不含有如下字符的行
+$ awk '{if($1 !~ /Googlebot|Baiduspider|Sogou|bingbot|Yahoo/) print $0}' test.log
+
+
+#正则  输出test.log文件中含有 content/数字  的行
+$ awk '{if($0 ~ /content\/[0-9]+/) print $0}' test.log
+
+#排序  对nginx_access.log文件中第一块出现行数数量进行排序
+$ awk '{print $1}' nginx_access.log |sort |uniq -c|sort -n #升序
+$ awk '{print $1}' nginx_access.log |sort |uniq -c|sort -nr #降序
+
+#统计某个文件夹下的所有文件占用的字节数
+$ ls -l |awk 'BEGIN {size=0;} {size=size+$5;} END{print "[end]size is ", size}'
+#统计某个文件夹下的每个文件占用的字节数
+$ ls -l |awk '{size=0;} {size=size+$5;} {print "[end]size is ", size}'
+
+
+#条件语句
+$ ls -l |awk 'BEGIN {size=0;print "[start]size is ", size} {if($5!=4096){size=size+$5;}} END{print "[end]size is ", size/1024/1024,"M"}' 
+
+#循环与数组
+$ awk -F ':' 'BEGIN {count=0;} {name[count] = $1;count++;}; END{for (i = 0; i < NR; i++) print i, name[i]}' /etc/passwd
