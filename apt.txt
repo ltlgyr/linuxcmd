@@ -27,4 +27,33 @@ sudo dpkg --get-selections |more
 2.给bash-file锁定当前版本不更新
 sudo echo "bash-file hold " |sudo dpkg --set-selections 
 3.查看当前己锁定的软件包：
-suod dpkg --get-selections |grep hold 
+sudo dpkg --get-selections |grep hold 
+
+
+apt-get
+1.当是修复安装吧...
+-f = --fix-missing"
+2.删除包
+sudo apt-get remove package 
+3.删除包，包括删除配置文件等
+sudo apt-get remove package - - purge 
+4更新源
+sudo apt-get update 
+5更新已安装的包
+sudo apt-get upgrade 
+6.升级系统
+sudo apt-get dist-upgrade 
+7.使用 dselect 升级
+sudo apt-get dselect-upgrade 
+8.了解使用依赖
+apt-cache depends package 
+9.了解某个具体的依赖?#当是查看该包被哪些包依赖吧...
+apt-cache rdepends package 
+10.安装相关的编译环境
+sudo apt-get build-dep package 
+11.下载该包的源代码
+apt-get source package 
+12.清理下载文件的存档 && 只清理无用的包
+sudo apt-get clean && sudo apt-get autoclean 
+13.检查是否有损坏的依赖
+sudo apt-get check 
