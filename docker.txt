@@ -7,29 +7,63 @@ sudo service docker stop
 # 重启docker
 sudo service docker restart
 
-# 列出镜像
+
+----创建基础镜像：------
+#第一步：准备环境
+mkdir docker-demo
+cd  docker-demo
+wget http://dl-cdn.alpinelinux.org/alpine/v3.9/releases/x86_64/alpine-minirootfs-3.9.0-x86_64.tar.gz
+echo >> Dockerfile << "EOF"
+>FROM scratch
+>ADD alpine-minirootfs-3.9.0-x86_64.tar.gz  /
+>CMD ["/bin/sh"]
+>EOF
+#第二步：创建镜像。
+docker build -t chello:0.1 .
+
+第三步：查看镜像
+docker images
 docker image ls
+查看镜像的详细命令。
+docker inspect f257d69e0035
+
+第四步：执行镜像生成容器。
+   -t:为容器重新分配一个伪输入终端，通常与 -i 同时使用
+   -i:以交互模式运行容器，通常与 -t 同时使用
+   -d:后台运行容器，并返回容器ID
+   --name:为容器指定一个名称
+   -p:端口映射，格式为：主机(宿主)端口:容器端口
+   -v: 挂载宿主机文件夹，格式为： 宿主机文件夹：容器文件夹
+   --link: 添加链接到另一个容器
+   -m:设置容器使用内存最大值；
+sudo docker run -tid --name test  bash:0.1
+
+第五步：查看log
+sudo docker logs 486ea24d3696(CONTAINER id)
+
+第六步：停止一个已经在运行的容器
+sudo docker container stop 容器名或容器id
+kill掉一个已经在运行的容器
+sudo docker container kill 容器名或容器id
+
+第七步：启动一个已经停止的容器
+sudo docker start test 
+sudo docker container start 4b3346bbfadb
+sudo docker start 
+docker container start 容器名或容器id
+
+第八步：删除容器
+sudo docker rm CONTAINER id 
+sudo docker container rm
+
+第九步：本地文件导入
+sudo cat ubuntu-14.04-x86_64-minimal.tar.gz |docker import - ubuntu:14.04
+
+第十步：删除镜像
+docker image rm 镜像id/镜像ID
+# 删除images，通过image的id来指定删除谁
+docker rmi 
+----------end-------------------
 
 # 拉取镜像
 docker image pull library/hello-world
-
-# 删除镜像
-docker image rm 镜像id/镜像ID
-
-# 删除images，通过image的id来指定删除谁
-docker rmi 
-
-# 创建容器
-docker run [选项参数] 镜像名 [命令]
-
-# 停止一个已经在运行的容器
-docker container stop 容器名或容器id
-
-# 启动一个已经停止的容器
-docker container start 容器名或容器id
-
-# kill掉一个已经在运行的容器
-docker container kill 容器名或容器id
-
-# 删除容器
-docker container rm 容器名或容器id
