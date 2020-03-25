@@ -9,7 +9,7 @@ sudo service docker restart
 
 
 ----创建基础镜像：------
-#第一步：准备环境
+第1步：准备环境
 mkdir docker-demo
 cd  docker-demo
 wget http://dl-cdn.alpinelinux.org/alpine/v3.9/releases/x86_64/alpine-minirootfs-3.9.0-x86_64.tar.gz
@@ -18,16 +18,23 @@ echo >> Dockerfile << "EOF"
 >ADD alpine-minirootfs-3.9.0-x86_64.tar.gz  /
 >CMD ["/bin/sh"]
 >EOF
-#第二步：创建镜像。
-docker build -t chello:0.1 .
+第2步：创建镜像。
+sudo docker build -t miniroot:1.0 .
 
-第三步：查看镜像
+第3步：保存镜像文件
+sudo docker save -o miniroot miniroot
+
+第4步：从文件载入镜像
+sudo docker load --input  miniroot
+sudo docker load < miniroot
+
+第5步：查看镜像
 docker images
 docker image ls
 查看镜像的详细命令。
 docker inspect f257d69e0035
 
-第四步：执行镜像生成容器。
+第6步：执行镜像生成容器。
    -t:为容器重新分配一个伪输入终端，通常与 -i 同时使用
    -i:以交互模式运行容器，通常与 -t 同时使用
    -d:后台运行容器，并返回容器ID
@@ -37,33 +44,67 @@ docker inspect f257d69e0035
    --link: 添加链接到另一个容器
    -m:设置容器使用内存最大值；
 sudo docker run -tid --name test  bash:0.1
+修改容器的名字。
+sudo docker rename sleepy_merkle mini
 
-第五步：查看log
+第7步：查看log
 sudo docker logs 486ea24d3696(CONTAINER id)
 
-第六步：停止一个已经在运行的容器
+第8步：停止一个已经在运行的容器
 sudo docker container stop 容器名或容器id
 kill掉一个已经在运行的容器
 sudo docker container kill 容器名或容器id
 
-第七步：启动一个已经停止的容器
+第9步：启动一个已经停止的容器
 sudo docker start test 
 sudo docker container start 4b3346bbfadb
 sudo docker start 
 docker container start 容器名或容器id
 
-第八步：删除容器
+第10步：删除容器
 sudo docker rm CONTAINER id 
 sudo docker container rm
 
-第九步：本地文件导入
+第11步：本地文件导入
 sudo cat ubuntu-14.04-x86_64-minimal.tar.gz |docker import - ubuntu:14.04
 
-第十步：删除镜像
+第12步：删除镜像
 docker image rm 镜像id/镜像ID
 # 删除images，通过image的id来指定删除谁
 docker rmi 
 ----------end-------------------
 
-# 拉取镜像
-docker image pull library/hello-world
+----------------本地搭建服务器-----------------------
+第1步：download registry
+sudo docker pull registry
+
+第2步:修改/etc/default/docker
+sudo vim /etc/default/docker
+在DOCKER_OPTS更改成如下：
+DOCKER_OPTS="--registry-mirror=http://hub-mirror.c.163.com --insecure-registry 192.168.147.129:5000"
+**5000端口一定得加,宿主机默认是访问80端口，不想加的话可以在启动容器的时候以宿主机的80端口映射容器的5000端口
+
+修改 /etc/docker/daemon.json
+在文件中添加如下文字，ip是本机的IP地址。
+"insecure-registries": ["ip:5000"]
+
+重启系统
+sudo service docker restart
+
+第3步：运行registry镜像仓库的容器实例。
+mkdir -p /opt/data/registry  //创建目录
+sudo docker run -d -p 5000:5000 -v /opt/data/registry:/var/lib/registry  \
+      --name privater registry  //启动容器
+-d : 让容器可以后台运行
+-p ：指定映射端口（前者是宿主机的端口号，后者是容器的端口号）
+-v ：数据挂载（前者是宿主机的目录，后者是容器的目录）
+--name : 为运行的容器命名
+
+第4步:上传镜像 ip 是本机ip
+sudo docker tag miniroot:1.0 ip:5000/miniroot
+sudo docker push ip:5000/miniroot
+
+
+第5步： 拉取镜像
+docker image pull ip:5000/miniroot
+---------------------end-----------------------------
