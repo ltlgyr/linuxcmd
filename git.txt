@@ -103,4 +103,33 @@ git config --global user.email  <email>
 	shortlog 
 
 	reflog
-
+[ submodule ]
+	第一步：添加子模块。
+	git submodule add https://github.com/ltlgyr/linuxcmd.git
+在.gitmodules文件中：
+	[submodule "linuxcmd"]
+    path = linuxcmd
+    url = https://github.com/ltlgyr/linuxcmd.git
+	第二步：查看子模块的状态。
+		git diff --cached linuxcmd
+		git diff --cached --submodule
+	第三步：提交修改。
+		git commit -am "add the module"	
+		git push origin master
+	第三步：克隆含有子模块的项目
+		git clone gitpath 
+		git submodule init
+		git submodule update
+	  更简单的方法；
+		git clone --recurse-submodules gitpath
+	第四步：查看不同
+		git diff --submodule
+		git submodule update --remote 
+		git log -p --submodule
+	第五步：同步
+		git submodule sync --recursive 
+		git submodule update --remote --merge
+		
+		
+		
+		
