@@ -1,0 +1,21 @@
+创建一个虚拟环境 
+conda create -n myname python=*.*
+激活一个虚拟环境
+conda activate myname
+退出虚拟环境
+conda deactivate
+克隆一个虚拟环境
+conda create -n name  --clone oldname
+删除一个虚拟环境
+conda remove -n oldname --all
+查看当前存在那些虚拟环境
+conda info -e 
+conda env list 
+安装软件包
+conda install package_name
+查看安装了的软件包
+conda list 
+检查更新当前的软件包
+conda update conda
+
+
