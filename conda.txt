@@ -1,3 +1,10 @@
+1.install anaconda
+官网下载anaconda https://www.anaconda.com/
+2. configure 
+
+
+3.using:
+
 查看版本号
 conda --version 
 conda -V
@@ -8,6 +15,13 @@ conda create --name myenv python=3.6 numpy scipy
 激活一个虚拟环境
 conda activate myname
 source activate myname
+安装
+conda install ipykernel
+将环境写入notebook的环境中
+
+python -m ipykernel install --user --name py3  --display-name py3 
+conda install nb_conda
+
 退出虚拟环境
 conda deactivate
 source deactivate myname
@@ -27,4 +41,5 @@ conda install package_name=1.5
 conda list 
 检查更新当前的软件包
 conda update conda
+
 
