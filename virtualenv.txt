@@ -1,0 +1,12 @@
+1. install: 
+sudo apt-get install python-pip
+apt-get install virtualenvwrapper virtualenv
+source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
+
+2. using :
+创建
+mkvirtualenv -p /usr/bin/python3   py3
+使用
+workon py3 
+退出
+deactivate
