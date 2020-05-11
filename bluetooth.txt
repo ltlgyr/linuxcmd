@@ -1,0 +1,28 @@
+1.安装 bluez-util 
+
+2.配置文件：
+/etc/bluetooth/rfcomm.conf
+
+3.命令
+1>hcid
+2>hciemu
+激活设备
+3>hciconfig hci0 up
+
+4>hcidump
+5>hcitool
+	hcitool scan
+	hcitool cc 
+
+6>hciattach
+
+7> rfcomm create dev
+	mknod /dev/rfcomm0 c 216 1
+	chmod 666 /dev/rfcomm0
+	rfcomm bind /dev/rfcomm0 00:21:19:A4:E0:F1 1
+
+8> rfcomm bind /dev/rfcomm0  蓝牙地址
+
+停止设备
+	rfkill block 0
+	rfkill block all
