@@ -4,25 +4,37 @@
 /etc/bluetooth/rfcomm.conf
 
 3.命令
-1>hcid
-2>hciemu
-激活设备
-3>hciconfig hci0 up
+1>查看usb 设备
+lsusb 
+2>查看hci
+hciconfig -a
+3>列出所有wireless的状态
+rfkill 
+阻塞 id = 0 的设备 
+rfkill block 0
+非阻塞id=0 的设备
+rfkill unblock 0
+4> 打开hci0设备。
+hciconfig hci0 up
+5> 扫描,低功耗用lescan
+hcitools scan
+6> 使用SDP协议测试是否连通
+l2ping -i hci0 -c 4 A2:CF:49:FD:99:AF
+7> 利用SDP协议，我们可以查看每个设备都有的功能，以及能提供的服务，基于RFCOMM
+sdptool browse local
+配置/etc/systemd/system/dbus-org.bluez.service
+ExecStart=/usr/lib/bluetooth/bluetoothd --compat
 
-4>hcidump
-5>hcitool
-	hcitool scan
-	hcitool cc 
+8> 使用 bluetoothctl 连接电脑
 
-6>hciattach
 
-7> rfcomm create dev
+
+
+
+7> rfcomm create dev MACid
 	mknod /dev/rfcomm0 c 216 1
 	chmod 666 /dev/rfcomm0
 	rfcomm bind /dev/rfcomm0 00:21:19:A4:E0:F1 1
 
 8> rfcomm bind /dev/rfcomm0  蓝牙地址
 
-停止设备
-	rfkill block 0
-	rfkill block all
