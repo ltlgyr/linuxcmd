@@ -47,6 +47,10 @@ git config --global user.email  <email>
 		git format-patch -n 
 	reset 
 		git reset --hard  ID
+	stage 
+	    git stage  
+		git stage pop 
+		git stage -sb
 
 [ remote ]
 	push
@@ -142,4 +146,5 @@ git config --global user.email  <email>
 		git reset --hard [commit id]
 	方法二：
 		git cherry-pick  [startpoint] [endpoint]
+
 		
