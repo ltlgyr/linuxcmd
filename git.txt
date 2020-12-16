@@ -67,14 +67,12 @@ git config --global user.email  <email>
 		git format-patch -n 
 
 	reset:   [index, head, working directory]
-		git reset --sorf
-		git reset --mix ( 默认使用)
-		git reset --hard  ID
+		git reset --sorf (回退commit，内容在stage中)
+		git reset --mix ( 默认使用) （回退commit， 内容在工作区）
+		git reset --hard  ID （回退commit，内容也回退）
 
 	stage:
 	    git stage  
-		git stage pop 
-		git stage -sb
 
 [ remote ]
 	push
