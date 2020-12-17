@@ -1,0 +1,6 @@
+dpkg:
+	dpkg -X 解出包内容
+
+	dpkg -e 输出包控制信息
+
+	dpkg -b 打包
