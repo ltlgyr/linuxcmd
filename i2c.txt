@@ -1,0 +1,19 @@
+1. i2cdetect 的使用
+	1.1 列出所有的i2c
+	i2cdetect -l
+	1.2 检测i2c-1上的挂载情况
+	i2cdetect -y -r 1
+
+2. i2cdump 的使用
+	2.1 列出挂载在i2c1 地址0x20上的器件的寄存器
+	i2cdump -y -f 1 0x20 
+
+
+3. i2cget 的使用
+	3.1 获取 i2c1上 地址 0x20 上的寄存器 0x77的值
+	i2cget -f -y 1 0x20 0x77
+
+
+4. i2cset 的使用
+	4.1 设置 i2c1上 地址 0x20 上的寄存器 0x77的值 为0x3f
+	i2cset -f -y 1 0x20 0x77 0x3f
