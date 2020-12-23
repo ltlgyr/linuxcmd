@@ -163,7 +163,7 @@ git config --global user.email  <email>
 		git submodule update --remote --merge
 		
 
-[ using ]
+[ using 1]
 	将其他commit添加到一个分支上的方法	
 	方法一：
 		git rebase [startpoint] [endpoint] --onto  [branch]
@@ -171,5 +171,15 @@ git config --global user.email  <email>
 		git reset --hard [commit id]
 	方法二：
 		git cherry-pick  [startpoint] [endpoint]
+
+[ using 2]	
+	修改某一个commit
+		1.git rebase -i 这个commit的前一个 
+		2.将pick修改成 edit
+		3.修改内容
+		4.git commit --amend -m ""
+		5.git rebase --continue
+
+
 
 		
