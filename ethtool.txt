@@ -1,0 +1,3 @@
+网卡支持远程开机
+ethtool -s eth0 wol d
+ethtool -s eth0 wol g
