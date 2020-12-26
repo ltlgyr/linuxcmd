@@ -4,3 +4,13 @@ dpkg:
 	dpkg -e 输出包控制信息
 
 	dpkg -b 打包
+
+	apt-get source filename
+		
+	dpkg-source -x gaim_1.5.0+1.5.1cvs20051015-5.dsc
+
+	dpkg-checkbuilddeps
+
+
+配置：
+	dpkg-reconfigure

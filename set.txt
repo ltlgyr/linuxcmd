@@ -1,0 +1,2 @@
+1.修改文件的内容
+set -i "s/src/dec/" filename
