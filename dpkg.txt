@@ -14,3 +14,12 @@ dpkg:
 
 配置：
 	dpkg-reconfigure
+
+解决冲突：
+	sudo dpkg -P  ***.deb
+	sudo dpkg -i --force-overwrite /var/cache/apt/archives/libjline-java_1.0-1_all.deb
+	sudo apt-get -o Dpkg::Options::="--force-overwrite" install <package-name>
+
+指定armhf体系的库
+	dpkg --add-architecture armhf
+
