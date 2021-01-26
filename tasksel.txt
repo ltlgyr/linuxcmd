@@ -1,0 +1,2 @@
+tasksel --list-tasks
+tasksel --task-packages web-server
