@@ -1,0 +1,11 @@
+1.解压：
+tar -xvf file.tar.gz
+
+2.压缩：
+tar -cvf file.tar.gz  file/
+
+3.使用cpio，创建一个cpio
+find . \( -path "./dev" -o -path "./etc" \) -prune -o -print | cpio -o -O ../rootimg.cpio
+
+4.使用cpio 解压
+cpio -id -I ../root.cpio
