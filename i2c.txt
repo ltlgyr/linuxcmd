@@ -17,3 +17,7 @@
 4. i2cset 的使用
 	4.1 设置 i2c1上 地址 0x20 上的寄存器 0x77的值 为0x3f
 	i2cset -f -y 1 0x20 0x77 0x3f
+
+
+https://mirrors.edge.kernel.org/pub/software/utils/i2c-tools/
+5. i2ctransfer 的使用
