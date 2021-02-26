@@ -24,7 +24,10 @@ git config --global user.email  <email>
 	show:
 		git show 
 	clean:
-		git clean
+		git clean -xdf
+			x  -----删除忽略文件已经对git来说不识别的文件
+			d  -----删除未被添加到git的路径中的文件
+			f  -----强制运行
 	stash: 将所有未提交的修改
 		git stash  list
 		git stash  show 
