@@ -1,0 +1,54 @@
+1.修改屏幕的显示:
+$ xrandr -o left 向左旋转90度
+$ xrandr -o right 向右旋转90度
+$ xrandr -o inverted 上下翻转
+$ xrandr -o normal 回到正常角度
+2.配置：
+
+/etc/X11/xorg.conf.d/20-modesetting.conf
+### Valid values for rotation are "normal", "left", "right" "inverted" 
+Section "Monitor" 
+	Identifier  "Default Monitor" 
+	Option      "Rotate" "normal" 
+EndSection
+
+3.配置触摸屏：
+cp /usr/share/X11/xorg.conf.d/40-libinput.conf  /etc/X11/xorg.conf.d/
+找触屏的设置
+ection "InputClass"
+	Identifier "libinput touchscreen catchall"
+	MatchIsTouchscreen "on"
+	MatchDevicePath "/dev/input/event*"
+	Driver "libinput"
+EndSection
+
+在Identifier下添加Option "CalibrationMatrix" "-1 0 1 0  -1  1 0 0 1"
+
+90度       "0 -1 1 1 0 0 0 0 1"
+坐标矩阵:
+（0  -1   1）
+（1   0   0）
+（0   0   0）
+
+180度      "-1 0 1 0  -1  1 0 0 1"
+坐标矩阵:
+（-1  0   1）
+（0  -1   1）
+（0   0   1）
+
+270度      "0 1 0  -1 0 1 0 0 1"
+（0   1   0）
+（-1  0   1）
+（0   0   1）
+
+x ,y对调  "-1 0 1 1 0  0  0 0 1"
+（-1  0   1）
+（ 1  0   0）
+（ 0  0   1）
+
+
+4.配置usb触屏
+xinput list
+xinput --list-props $num
+
+
