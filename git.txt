@@ -74,8 +74,11 @@ git config --global user.email  <email>
 		git reset --mix ( 默认使用) （回退commit， 内容在工作区）
 		git reset --hard  ID （回退commit，内容也回退）
 
-	stage:
+	stage: Stash the changes in a dirty working directory away
 	    git stage  
+
+	revert: Revert some existing commits
+		git revert
 
 [ remote ]
 	push
@@ -84,6 +87,7 @@ git config --global user.email  <email>
 	pull:  Fetch from and integrate with another repository or a local branch
 
 	fetch : Download objects and refs from another repository
+
 
 
 [ branch ]
