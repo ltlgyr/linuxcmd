@@ -81,11 +81,16 @@ git config --global user.email  <email>
 	push
 		git push origin --delete  currentbranch
 		git push origin HEAD -f
-	pull
+	pull:  Fetch from and integrate with another repository or a local branch
+
+	fetch : Download objects and refs from another repository
+
 
 [ branch ]
 	checkout:
 		git
+		创建一个没有父节点的branch
+		git checkout --orphan <branch name>
 
 	branch:
 		git branch  -D
@@ -133,8 +138,11 @@ git config --global user.email  <email>
 		git log --grep="text in commit"
 		git log --all-match --grep="text in commit" --author="text in author"
 		git log --graph --oneline --all 
+		git log --graph --pretty=oneline --abbrev-commit
 
 	shortlog 
+	
+	whatchanged
 
 	reflog
 		git reflog 
@@ -185,4 +193,19 @@ git config --global user.email  <email>
 
 
 
-		
+[ using 3]		
+	基于master 创建两个分支a,b开发, a先开发完提交，b后开发完。
+	1. git checkout master 
+	2. git pull
+	3. git checkout b
+	4. git rebase master
+	     解决冲突，
+	5. git rebase continue...
+	6. git checkout master 
+	7. git merge b
+
+	
+	
+		git remote update
+
+
