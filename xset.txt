@@ -1,0 +1,8 @@
+1.显示：
+xset q 
+2. 设置screensaver
+xset s 0 
+3. 设置待机
+xset dpms 0 0 0
+4. 设置dpms 无效
+xset -dpms
