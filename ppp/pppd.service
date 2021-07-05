@@ -1,0 +1,17 @@
+[Unit]
+Description=Start pppd.service at startup.
+DefaultDependencies=no
+After=systemd-fsck-root.service                  
+Before=local-fs-pre.target local-fs.target
+Wants=local-fs-pre.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/pppd-script
+Restart=always
+RestartSec=5
+StartLimitInterval=0
+
+[Install]
+WantedBy=local-fs-pre.target
+Alias=pppd.service
